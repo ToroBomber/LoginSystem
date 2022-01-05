@@ -13,7 +13,7 @@ namespace practice
         public int accountlength;
         public int passwordlength;
         AccountClass accountClass = new AccountClass();
-        public Dictionary<string, string> MainDic = new Dictionary<string, string>();//主要字典
+        //public Dictionary<string, string> MainDic = new Dictionary<string, string>();//主要字典
         public Dictionary<string, AccountClass> AccountDic = new Dictionary<string, AccountClass>();//帳號字典
 
         public Form1()
@@ -21,21 +21,31 @@ namespace practice
             InitializeComponent();
             label1.Text = "";
         }
-
+        /// <summary>
+        /// 當創造帳號按鈕按下
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             do
             {
                 account = getAccount();//取得帳號
 
-            } while (MainDic.ContainsKey(account));//if (MainDic.ContainsKey(account) == true)(MainDic前面加驚嘆號意思相反)
+            } while (AccountDic.ContainsKey(account));//if (MainDic.ContainsKey(account) == true)(MainDic前面加驚嘆號意思相反)
             int[] password = getPassword();//取得密碼
             string trnPassword = translatePassword(password);
-            MainDic = accountpassword(account, trnPassword, MainDic);//將產生的帳號密碼存入字典
-            AccountDic.Add(account, accountClass);
+            accountClass.password = trnPassword;
+            accountClass.account = account;
+            //AccountDic = accountpassword(account,accountClass);
+            AccountDic.Add(account, accountClass);//將產生的帳號密碼存入字典
             label1.Text = account + "\n" + BindUser(password);//顯示帳號密碼
             //label1.Text += BindUser(account,password);//顯示帳號密碼
         }
+        /// <summary>
+        /// 帳號產生
+        /// </summary>
+        /// <returns></returns>
         private string getAccount()//取得指定長度帳號
         {
             int.TryParse(textBox4.Text, out accountlength);
@@ -50,7 +60,10 @@ namespace practice
             }
             return user;
         }
-
+        /// <summary>
+        /// 密碼產生
+        /// </summary>
+        /// <returns></returns>
         private int[] getPassword()
         {
             int.TryParse(textBox3.Text, out passwordlength);
@@ -70,39 +83,39 @@ namespace practice
         {
             string userAccount = textBox1.Text;
             string userPasswod = textBox2.Text;
-            if (accountClass.loginCount == 3)
+            label2.Text = "";
+            if (AccountDic[userAccount].loginCount == 3)//檢查該帳號登入失敗次數
             {
-                accountClass.loginFail = true;
+                AccountDic[userAccount].loginFail = true;
             }
-            if (accountClass.loginFail == true)
+            if (AccountDic[userAccount].loginFail == true)//如果登入失敗3次就不給登
             {
                 label2.Text = "returned";
                 return;
             }
-            if (MainDic.TryGetValue(userAccount, out trnPassword))
+            if (AccountDic.TryGetValue(userAccount, out accountClass))//檢查帳號是否存在(是)
             {
-                if (trnPassword == userPasswod)
+                if (AccountDic[userAccount].password == userPasswod)//檢查帳號密碼是否正確
                 {
                     label2.Text = "log in sussess";
                 }
                 else
-                {
+                { 
                     label2.Text = "log in failed";
-                    accountClass.loginCount++;
+                    AccountDic[userAccount].loginCount++;
                 }
             }
-            else
+            else//檢查帳號是否存在(否)
             {
                 label2.Text = "Wrong account";
-                accountClass.loginCount++;
             }
         }
 
-        private Dictionary<string, string> accountpassword(string key, string value, Dictionary<string, string> mainDic)//次要字典
-        {
-            mainDic.Add(key, value.ToString());
-            return mainDic;
-        }
+        //private Dictionary<string, AccountClass> accountpassword(string key,Dictionary<string, AccountClass> mainDic)//次要字典
+        //{
+        //    mainDic.Add(key, accountClass);
+        //    return mainDic;
+        //}
         public string BindUser(int[] password)
         {
             string user = "";

@@ -9,7 +9,8 @@ namespace practice
     public class AccountClass
     {
         public string account;
-        public int loginCount;
-        public bool loginFail;
+        public int loginCount = 0;
+        public string password;
+        public bool loginFail = false;
     }
 }
