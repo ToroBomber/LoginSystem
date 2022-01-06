@@ -12,7 +12,6 @@ namespace practice
         public int logincount;
         public int accountlength;
         public int passwordlength;
-        AccountClass accountClass = new AccountClass();
         //public Dictionary<string, string> MainDic = new Dictionary<string, string>();//主要字典
         public Dictionary<string, AccountClass> AccountDic = new Dictionary<string, AccountClass>();//帳號字典
 
@@ -28,6 +27,7 @@ namespace practice
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
+            AccountClass accountClass = new AccountClass();
             do
             {
                 account = getAccount();//取得帳號
@@ -49,6 +49,8 @@ namespace practice
         private string getAccount()//取得指定長度帳號
         {
             int.TryParse(textBox4.Text, out accountlength);
+            if (string.IsNullOrWhiteSpace(textBox4.Text))
+                accountlength = 6;
             Random account;
             if (accountlength > 9) accountlength = 9;
             var accountbox = "qwertyuiopasdfghjklzxcvbnm";
@@ -67,9 +69,11 @@ namespace practice
         private int[] getPassword()
         {
             int.TryParse(textBox3.Text, out passwordlength);
+            if (string.IsNullOrWhiteSpace(textBox3.Text))
+                passwordlength = 4;
             if (passwordlength > 9) passwordlength = 9;
             int[] password = new int[passwordlength];
-            Random getPassword = new Random();//產生隨機4個數字
+            Random getPassword = new Random();//產生隨機passwordlength個數字
             for (int i = 0; i < passwordlength; i++)
             {
                 password[i] = getPassword.Next(0, 9);
@@ -81,28 +85,34 @@ namespace practice
 
         private void button2_Click(object sender, EventArgs e)
         {
+            AccountClass accountClass = new AccountClass();
             string userAccount = textBox1.Text;
             string userPasswod = textBox2.Text;
-            label2.Text = "";
-            if (AccountDic[userAccount].loginCount == 3)//檢查該帳號登入失敗次數
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
+                userAccount = account+"a";
+                label2.Text = "";
+            if( AccountDic.TryGetValue(userAccount, out accountClass))
             {
-                AccountDic[userAccount].loginFail = true;
-            }
-            if (AccountDic[userAccount].loginFail == true)//如果登入失敗3次就不給登
-            {
-                label2.Text = "returned";
-                return;
-            }
-            if (AccountDic.TryGetValue(userAccount, out accountClass))//檢查帳號是否存在(是)
-            {
-                if (AccountDic[userAccount].password == userPasswod)//檢查帳號密碼是否正確
+                if (AccountDic[userAccount].loginCount == 3)//檢查該帳號登入失敗次數
                 {
-                    label2.Text = "log in sussess";
+                    AccountDic[userAccount].loginFail = true;
                 }
-                else
-                { 
-                    label2.Text = "log in failed";
-                    AccountDic[userAccount].loginCount++;
+                if (AccountDic[userAccount].loginFail == true)//如果登入失敗3次就不給登
+                {
+                    label2.Text = "returned";
+                    return;
+                }
+                if (AccountDic.TryGetValue(userAccount, out accountClass))//檢查帳號是否存在(是)
+                {
+                    if (AccountDic[userAccount].password == userPasswod)//檢查帳號密碼是否正確
+                    {
+                        label2.Text = "log in sussess";
+                    }
+                    else
+                    {
+                        label2.Text = "log in failed";
+                        AccountDic[userAccount].loginCount++;
+                    }
                 }
             }
             else//檢查帳號是否存在(否)

@@ -117,7 +117,7 @@ namespace practice
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(148, 248);
+            this.textBox3.Location = new System.Drawing.Point(202, 248);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(91, 22);
             this.textBox3.TabIndex = 11;
@@ -127,9 +127,9 @@ namespace practice
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(27, 251);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(115, 12);
+            this.label5.Size = new System.Drawing.Size(169, 12);
             this.label5.TabIndex = 12;
-            this.label5.Text = "密碼長度(數目9以內)";
+            this.label5.Text = "密碼長度(數目9以內，預設為4)";
             // 
             // label6
             // 
@@ -145,13 +145,13 @@ namespace practice
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(27, 226);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(115, 12);
+            this.label7.Size = new System.Drawing.Size(169, 12);
             this.label7.TabIndex = 14;
-            this.label7.Text = "帳號長度(數目9以內)";
+            this.label7.Text = "帳號長度(數目9以內。預設為6)";
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(148, 216);
+            this.textBox4.Location = new System.Drawing.Point(202, 220);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(91, 22);
             this.textBox4.TabIndex = 15;
